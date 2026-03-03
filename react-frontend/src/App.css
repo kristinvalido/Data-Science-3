@@ -1,7 +1,64 @@
+/* Ensure the body doesn't block centering */
+body {
+  margin: 0;
+  padding: 0;
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  max-width: 100% !important; /* Overrides the default Vite 1280px limit */
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;    /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  width: 100vw;
+  height: 100vh;
+  background-color: #242424;
+  color: white;
+  text-align: center;
+}
+
+.sso-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #333;
+}
+
+.logout-btn {
+  background-color: #cc0000;
+  margin-top: 15px;
+}
+
+.card {
+  padding: 2em;
+  background: #1a1a1a;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100vw;
   text-align: center;
 }
 
@@ -11,13 +68,8 @@
   will-change: filter;
   transition: filter 300ms;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
 
+/* 1. Define how the logo should spin */
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -28,15 +80,15 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
+  .logo.react {
     animation: logo-spin infinite 20s linear;
   }
 }
 
-.card {
-  padding: 2em;
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
 }
 
-.read-the-docs {
-  color: #888;
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
 }
