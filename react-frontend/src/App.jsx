@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { auth, googleProvider } from './firebase';
 import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+
 import NowPlaying from './NowPlaying';
+import SongSearch from './SongSearch';
+
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
@@ -50,6 +54,7 @@ function App() {
         </div>
         <h1>Titan Tunes</h1>
         <NowPlaying />
+        <SongSearch />
         <div className="card">
           <button onClick={() => setCount((count) => count + 1)}>
             count is {count}
