@@ -30,4 +30,6 @@ import {doc, updateDoc, increment, getDoc, setDoc} from "firebase/firestore";
     catch (error){
       console.error("Vote failed:", error);
     }
+
+  };
       
