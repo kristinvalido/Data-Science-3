@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { auth, googleProvider } from './firebase';
 import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 import NowPlaying from './NowPlaying';
 import SongSearch from './SongSearch';
@@ -13,10 +12,9 @@ import './App.css';
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [count, setCount] = useState(0); // From original team code
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
-    // Observer handles state persistence
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
@@ -27,8 +25,6 @@ function App() {
   const login = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      
-      // Verification: Only allow CSUF accounts
       if (!result.user.email.endsWith('@csu.fullerton.edu')) {
         await signOut(auth);
         alert("Access Denied: Please use your official CSUF email.");
@@ -40,7 +36,6 @@ function App() {
 
   if (loading) return <div className="login-page"><h1>Loading...</h1></div>;
 
-  // REDIRECT LOGIC: If user exists, show Home Page
   if (user) {
     return (
       <div className="home-page">
@@ -54,24 +49,22 @@ function App() {
         </div>
         <h1>Titan Tunes</h1>
         <NowPlaying />
-        <SongSearch />
+        {/* Pass user so SongSearch can store submittedBy in Firestore */}
+        <SongSearch user={user} />
         <div className="card">
           <button onClick={() => setCount((count) => count + 1)}>
             count is {count}
           </button>
           <p>Welcome back, {user.displayName}!</p>
-          <button onClick={() => signOut(auth)} style={{marginTop: '20px', backgroundColor: '#333'}}>
+          <button onClick={() => signOut(auth)} style={{ marginTop: '20px', backgroundColor: '#333' }}>
             Logout
           </button>
         </div>
-        <p className="read-the-docs">
-          Campus Song Request System
-        </p>
+        <p className="read-the-docs">Campus Song Request System</p>
       </div>
     );
   }
 
-  // If no user, show Login Page
   return (
     <div className="login-page">
       <div className="card">
@@ -79,9 +72,7 @@ function App() {
         <p style={{ marginBottom: '1.5rem', color: '#ccc' }}>
           Please enter your CSUF email to continue
         </p>
-        <button onClick={login}>
-          Login with CSUF
-        </button>
+        <button onClick={login}>Login with CSUF</button>
       </div>
     </div>
   );
