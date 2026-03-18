@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9592f24d51146acb8e57c3907ee049f878c55980
 import { db } from "./firebase";
 import { doc, updateDoc, increment, getDoc, setDoc } from "firebase/firestore";
 
