@@ -16,12 +16,22 @@ export const randomSong = async () => {
         }
       }
     ):
-
+  
+# this is so it doesn't pick any explicit songs
   const data = await response.json();
+    
+  if (!data.tracks || !data.tracks.item) return null;
+    const cleanTracks = data.tracks.item.filter(
+      (track) => track.explicit == false
+      );
 
-  const tracks = data.tracks.item;
+    if (cleanTracks.length ===0) {
+      console.warn("No clean tracks found, retrying...");
+      return getRandomSong();
+    }
+    
 
-  const randomTrack = tracks[Math.floor(Math.random() * tracks.length)];
+  const randomTrack = cleanTracks[Math.floor(Math.random() * cleanTracks.length)];
   return {
     title: randomTrack.name
     artists: randomTrack.artists[0].name,
@@ -39,4 +49,3 @@ export const randomSong = async () => {
 };
 
 # this just grabs a random song, it can be modified to pick specific songs like most popular 
-# most likely its gonna need a safety feature implemented in
