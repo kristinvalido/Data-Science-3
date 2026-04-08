@@ -48,4 +48,5 @@ export const randomSong = async () => {
 
 };
 
+# the safett net for songs has been added, might need to check other files to see if it also has a safety net 
 # this just grabs a random song, it can be modified to pick specific songs like most popular 
