@@ -1,0 +1,48 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isCSUF() {
+      return request.auth != null &&
+             request.auth.token.email.matches('.*@csu\\.fullerton\\.edu');
+    }
+
+    function hasNoPendingSong() {
+      return !exists(/databases/$(database)/documents/userState/$(request.auth.uid))
+          || get(/databases/$(database)/documents/userState/$(request.auth.uid)).data.pendingSongId == null;
+    }
+
+    match /playback/current {
+      allow read: if isCSUF();
+      allow write: if false;
+    }
+
+    match /submittedSongs/{songId} {
+      allow read: if isCSUF();
+      allow create: if isCSUF()
+        && hasNoPendingSong()
+        && request.resource.data.keys().hasAll(['spotifyId','title','artist','submittedBy','votes','status','createdAt'])
+        && request.resource.data.submittedBy == request.auth.uid
+        && request.resource.data.votes == 0
+        && request.resource.data.status == 'pending';
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    match /votes/{voteId} {
+      allow read: if isCSUF() && request.auth.uid == resource.data.userId;
+      allow create: if isCSUF()
+        && request.auth.uid == request.resource.data.userId
+        && voteId == request.auth.uid + '_' + request.resource.data.trackId
+        && request.resource.data.voteType in ['up', 'down'];
+      allow update, delete: if false;
+    }
+
+    match /userState/{uid} {
+      allow read: if isCSUF() && request.auth.uid == uid;
+      // User can only write their own state doc
+      allow write: if isCSUF() && request.auth.uid == uid;
+    }
+  }
+}

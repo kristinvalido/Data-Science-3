@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --navy: #0C2340;
+  --navy-light: #1a3a5c;
+  --gold: #FFB300;
+  --gold-light: #FFC933;
+  --bg: #f8f9fa;
+  --bg-card: #ffffff;
+  --bg-muted: #f3f4f6;
+  --border: rgba(0,0,0,0.08);
+  --text: #111827;
+  --text-muted: #6b7280;
+  --success: #16a34a;
+  --error: #dc2626;
+  --warning: #d97706;
+
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: var(--bg); overflow-x: hidden; }
+#root { max-width: 100% !important; width: 100%; margin: 0; padding: 0; }
+h1, h2, h3, h4 { margin: 0; font-weight: 700; line-height: 1.2; }
+button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; outline: none; transition: all 0.2s ease; }
+input { font-family: 'Inter', sans-serif; }
+a { color: var(--navy); text-decoration: none; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
