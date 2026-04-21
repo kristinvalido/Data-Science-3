@@ -77,7 +77,7 @@ exports.autoQueueTopVoted = onSchedule(
       if (!playback.is_playing || !playback.item) return;
 
       const remainingMs = playback.item.duration_ms - playback.progress_ms;
-      if (remainingMs > 90_000) {
+      if (remainingMs > 30_000) {
         console.log(`Song has ${Math.round(remainingMs/1000)}s left, not queueing yet.`);
         return;
       }
