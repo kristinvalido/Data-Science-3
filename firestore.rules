@@ -3,21 +3,25 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // Helper: is user signed in with a CSUF email?
     function isCSUF() {
       return request.auth != null &&
              request.auth.token.email.matches('.*@csu\\.fullerton\\.edu');
     }
 
+    // Helper: user has no pending song currently in queue
     function hasNoPendingSong() {
       return !exists(/databases/$(database)/documents/userState/$(request.auth.uid))
           || get(/databases/$(database)/documents/userState/$(request.auth.uid)).data.pendingSongId == null;
     }
 
+    // ── playback/current ─────────────────────────────────────────────────
     match /playback/current {
       allow read: if isCSUF();
       allow write: if false;
     }
 
+    // ── submittedSongs ────────────────────────────────────────────────────
     match /submittedSongs/{songId} {
       allow read: if isCSUF();
       allow create: if isCSUF()
@@ -26,22 +30,29 @@ service cloud.firestore {
         && request.resource.data.submittedBy == request.auth.uid
         && request.resource.data.votes == 0
         && request.resource.data.status == 'pending';
-      allow update: if false;
+
+      // Allow ONLY vote increments — votes field only, +1 only
+      allow update: if isCSUF()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['votes'])
+        && request.resource.data.votes == resource.data.votes + 1;
+
       allow delete: if false;
     }
 
+    // ── votes ─────────────────────────────────────────────────────────────
     match /votes/{voteId} {
       allow read: if isCSUF() && request.auth.uid == resource.data.userId;
       allow create: if isCSUF()
         && request.auth.uid == request.resource.data.userId
         && voteId == request.auth.uid + '_' + request.resource.data.trackId
-        && request.resource.data.voteType in ['up', 'down'];
+        && request.resource.data.voteType == 'up';
       allow update, delete: if false;
     }
 
+    // ── userState ─────────────────────────────────────────────────────────
+    // Tracks whether a user currently has a pending request.
     match /userState/{uid} {
-      allow read: if isCSUF() && request.auth.uid == uid;
-      // User can only write their own state doc
+      allow read:  if isCSUF() && request.auth.uid == uid;
       allow write: if isCSUF() && request.auth.uid == uid;
     }
   }

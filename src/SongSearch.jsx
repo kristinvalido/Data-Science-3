@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { searchTracks, addToQueue } from "./spotify";
+import { searchTracks } from "./spotify";
 import { db } from "./firebase";
 import { collection, addDoc, serverTimestamp, query, where, getDocs, doc, setDoc, getDoc } from "firebase/firestore";
 
@@ -70,7 +70,6 @@ function SongSearch({ user }) {
         showToast(`"${track.title}" already submitted!`, "warning");
         return;
       }
-      await addToQueue(track.uri);
       await submitSongToFirestore(track, user.uid);
       setSubmittedIds(prev => new Set(prev).add(track.id));
       showToast(`"${track.title}" added to the queue! 🎵`, "success");
