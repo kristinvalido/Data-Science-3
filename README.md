@@ -18,3 +18,5 @@ If you are developing a production application, we recommend using TypeScript wi
 Google Cloud Admin Dashboard: https://console.cloud.google.com/home/dashboard?project=titan-tunes-37528&pli=1
 
 Firebase Dashboard: https://console.firebase.google.com/u/0/project/titan-tunes-37528/firestore/databases/-default-/data/~2FuserState~2FLwsIzYTrjidVb8KehHy8dfegKJl2
+
+Spotify Titan Tunes for Developers: https://developer.spotify.com/dashboard/47eb2e8b7c944819911b84566e9fc579
